@@ -16,24 +16,24 @@
 </div>
 
 <!-- Second Screen-->
-<div class="section2" [formGroup]="addForm" *ngIf="secondScreen==true">
+<div class="section2"  *ngIf="secondScreen==true">
   <div class="form-group">
     <label class="label-control">Number of Factors : {{Factors}}</label>
     <table class="table1">
       <tbody>
         <tr
-          *ngFor="let row of rows.value; let index = index"
+          *ngFor="let row of rows; let index = index"
         >
-          <td><input [formControl]="row.get('Factor_name')" /></td>
+          <td><input [(ngModel)]="row.Factor_name" #name="ngModel" /></td>
           <td>
-              <input [formControl]="row.get('Level_values')" />
+              <input [(ngModel)]="row.Level_values" #name="ngModel"/>
           </td>
         </tr>
       </tbody>
     </table>
   </div>
   <div>
-      <button class="button">Back</button>
+      <button class="button" (click)="display()">Back</button>
       <button class="button">Next</button>
   </div>
 </div>

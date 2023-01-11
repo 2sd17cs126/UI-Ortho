@@ -27,20 +27,18 @@ export class OAComponent {
   arr: Arr = { Factors: '0', Levels: '0' };
   addForm: FormGroup;
   displayedColumns=[]
-  rows: FormArray;
-  itemForm: FormGroup;
+  rows=[];
+  
 
   Factors=0
   Number_of_factor: string = '0';
 
   /**Initializing row as array of form builder*/
-  constructor(private fb: FormBuilder) {
-    this.rows = this.fb.array([]);
-  }
+  
 
   /**Adding rows to form group */
   ngOnInit() {
-    this.addForm.addControl('rows', this.rows);
+    
   }
   
   /**Getting the factor value and generating columns based on Factor value*/
@@ -54,15 +52,16 @@ export class OAComponent {
 
     for(let i=0 ; i< Number(this.Factors); i++)
     {
-      this.rows.push(this.createItemFormGroup());
+      this.rows.push({
+        Factor_name:'',
+        Level_values: '',
+      });
     }
   }
-
-  /**used to create element of form array*/
-  createItemFormGroup(): FormGroup {
-    return this.fb.group({
-      Factor_name: null,
-      Level_values: null,
-    });
+  display(){
+    console.log("rows:")
+    console.log(this.rows)
   }
+  /**used to create element of form array*/
+  
 }
