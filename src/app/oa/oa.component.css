@@ -1,0 +1,17 @@
+.mat-row {
+    height: auto;
+  }
+  .mat-header-cell{
+    padding: 15px 15px 15px 15px;
+    border: 1px solid black;
+    align-content: center;
+  }
+  .mat-cell {
+    padding: 15px 15px 15px 15px;
+    border: 1px solid black;
+    align-content: center;
+    
+  }
+  .mat-table {
+    border: 1px solid black;
+  }

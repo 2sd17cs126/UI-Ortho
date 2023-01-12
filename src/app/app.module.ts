@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
+import { ModalModule } from 'src/app/_modal/modal.module'
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { OAComponent } from './oa/oa.component';
 import { FormsModule , ReactiveFormsModule } from '@angular/forms';
-
+import {HttpClientModule} from '@angular/common/http';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import {ScrollingModule} from '@angular/cdk/scrolling';
 import {CdkTableModule} from '@angular/cdk/table';
@@ -25,7 +25,8 @@ import { HelpComponent } from './help/help.component';
     OAComponent,
     HelpComponent
   ],
-  imports: [
+  imports: [ModalModule,
+    HttpClientModule,
     BrowserModule,
     MatTableModule,
     AppRoutingModule,
