@@ -17,8 +17,10 @@
 
 <!-- Second Screen-->
 <div class="section2"  *ngIf="secondScreen==true">
-  <div class="form-group">
-    <label class="label-control">Number of Factors : {{Factors}}</label>
+  <label class="label-control">Number of Factors : {{Factors}}</label>
+  <div class="flex-container">
+  <div class="form-group" class="input-container">
+    
     <table class="table1">
       <tbody>
         <tr
@@ -26,14 +28,27 @@
         >
           <td><input [(ngModel)]="row.Factor_name" #name="ngModel" /></td>
           <td>
-              <input [(ngModel)]="row.Level_values" #name="ngModel"/>
+              <input [(ngModel)]="row.Level_count" #name="ngModel"/>
           </td>
+          
         </tr>
       </tbody>
     </table>
+    
+  
+      <button class="button" >Back</button>
+      <button class="button" (click)="CreateQA()">CreateQA</button>
+      <button class="button"(click)="display()">Next</button>
   </div>
-  <div>
-      <button class="button" (click)="display()">Back</button>
-      <button class="button">Next</button>
+  <div *ngIf="flag == true" class="input-container">
+    <div *ngFor="let v of rows">
+      
+        <input *ngFor="let i of v.Level_value" type="text" [(ngModel)]="i.value" #name="ngModel"  />
+     
+    </div>
+    
+    </div>
   </div>
 </div>
+
+

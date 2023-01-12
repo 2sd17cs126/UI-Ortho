@@ -28,7 +28,7 @@ export class OAComponent {
   addForm: FormGroup;
   displayedColumns=[]
   rows=[];
-  
+  flag=false;
 
   Factors=0
   Number_of_factor: string = '0';
@@ -54,14 +54,37 @@ export class OAComponent {
     {
       this.rows.push({
         Factor_name:'',
-        Level_values: '',
+        Level_count: '',
+        Level_value:[],
+        Level_values:''
       });
     }
   }
+  
   display(){
-    console.log("rows:")
+    for(let i=0;i<Number(this.Factors);i++){
+      for(let j=0;j<Number(this.rows[i].Level_count);j++){
+        this.rows[i].Level_value.push({value:'0'})
+      }
+    }
+    console.log("level_values:")
     console.log(this.rows)
+    this.flag=true;
   }
   /**used to create element of form array*/
+
+
+  CreateQA(){
+    for(let i=0;i<Number(this.Factors);i++){
+      for(let j=0;j<this.rows[i].Level_value.length;j++){
+        
+        this.rows[i].Level_values+=this.rows[i].Level_value[j].value
+        this.rows[i].Level_values+=','
+      }
+      this.rows[i].Level_values=this.rows[i].Level_values.slice(0,this.rows[i].Level_values.length-1)
+  }
   
+  console.log(this.rows)
+  
+}
 }
