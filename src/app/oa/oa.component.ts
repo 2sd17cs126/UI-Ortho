@@ -14,7 +14,7 @@ import { Arr } from 'src/app/model';
  * @title Basic expansion panel
  *
  */
-
+import * as $ from 'jquery';
 
 @Component({
   selector: 'app-oa',
@@ -22,6 +22,7 @@ import { Arr } from 'src/app/model';
   styleUrls: ['./oa.component.css']
 })
 export class OAComponent {
+  table_generated=false;
   firstScreen:boolean=true;
   secondScreen:boolean=false;
   map_col={}
@@ -30,6 +31,8 @@ export class OAComponent {
   displayedColumns=[]
   rows=[];
   flag=false;
+  flagoa=false;
+  flagnext=true;
   id:string=''
   Factors=0
   Number_of_factor: string = '0';
@@ -42,12 +45,41 @@ export class OAComponent {
   data: Array<{}> = [];
   one_time_flag=false
   flag_table:boolean=false;
+  previous_state=[]
   /**Initializing row as array of form builder*/
   constructor(private http: HttpClient,private modalService: ModalService) {
     
   }
+  Home(){
+    this.initialise_back_to_home();
 
+  }
+
+  initialise_back_to_home(){
+    
+    this.table_generated=false;
+    this.firstScreen=true;
+    this.secondScreen=false;
+    this.map_col={}
+    this.displayedColumns=[]
+    this.rows=[]
+    this.flagoa=false
+    this.flagnext=true
+    this.id=''
+    this.Factors=0
+    this.Number_of_factor='0'
+    this.onscreen=[]
+    this.obj={}
+    this.fetched_list=[]
+      this.radio_list=[]
+      this.displayedColumns=[]
+      this.data=[]
+      this.flag_table=false
+      this,this.one_time_flag=false
+  }
   /**Adding rows to form group */
+
+
   ngOnInit() {
     
   }
@@ -71,8 +103,19 @@ export class OAComponent {
       });
     }
   }
-  
+  refresh(){
+   
+   
+    
+    for(let index=0;index<Number(this.Factors);index++){
+      this.rows[index].Factor_name=this.previous_state[index].Factor_name
+      this.rows[index].Level_count=this.previous_state[index].Level_count
+      this.rows[index].Level_value=[]
+      this.rows[index].Level_values=''
+    }
+  }
   display(){
+    
     for(let i=0;i<Number(this.Factors);i++){
       for(let j=0;j<Number(this.rows[i].Level_count);j++){
         this.rows[i].Level_value.push({value:'0'})
@@ -81,11 +124,88 @@ export class OAComponent {
     console.log("level_values:")
     console.log(this.rows)
     this.flag=true;
+    this.flagoa=true;
+    this.flagnext=false;
+    $('.inputId').prop('readonly', true);
   }
   /**used to create element of form array*/
+  emptylist(){
+    if(this.flagnext==true){
+      this.previous_state=this.rows
+      $(".inputId").val(' ');
+      this.rows=[]
+      this.displayedColumns=[]
+      this.onSave()
+      
+    }
+    else if(this.flagoa==true)
+    {
+      $(".inputlevels").val(' ');
+      for(let i=0;i<Number(this.Factors);i++){
+        this.rows[i].Level_value=[] 
+      }
+      for(let i=0;i<Number(this.Factors);i++){
+        for(let j=0;j<Number(this.rows[i].Level_count);j++){
+          this.rows[i].Level_value.push({value:''})
+        }
+      }
+    }
 
+  }
+  sleep(milliseconds: number) {
+    let resolve: any;
+    let promise = new Promise((_resolve) => {
+      resolve = _resolve;
+    });
+    setTimeout(() => resolve(), milliseconds);
+    return promise;
+  }
 
-  CreateQA(id:string){
+  backfunction(){
+    if(this.flagoa==true)
+    {
+      $(".inputlevels").val('0');
+      for(let i=0;i<Number(this.Factors);i++){
+        this.rows[i].Level_value=[] 
+      }
+
+      console.log("data:")
+      console.log(this.data)
+      console.log("row value:")
+    console.log(this.rows)
+      this.flagoa=false
+      this.flagnext=true
+      
+      this.onscreen=[]
+      this.map_col={}
+      this.obj={}
+      this.fetched_list=[]
+      this.radio_list=[]
+      
+      this.data=[]
+      this.flag_table=false
+      $('.inputId').prop('readonly', false);
+    }
+    else if(this.flagnext==true)
+    {
+      $(".inputId").val(' ');
+      this.rows=[]
+      this.displayedColumns=[]
+      this.firstScreen=true
+      this.secondScreen=false
+      this.onscreen=[]
+      this.map_col={}
+      this.obj={}
+      this.fetched_list=[]
+      this.radio_list=[]
+      this.displayedColumns=[]
+      this.data=[]
+      this.flag_table=false
+      
+    }
+  }
+  
+  CreateOA(id:string){
     if(this.one_time_flag==false){
       for(let i=0;i<Number(this.Factors);i++){
         for(let j=0;j<this.rows[i].Level_value.length;j++){
@@ -134,22 +254,29 @@ export class OAComponent {
     })
     .subscribe((data) => (this.obj = data));
   console.log(this.obj);
-//
- if (this.obj) {
-    this.fetched_list=this.obj.result[1]
+this.sleep(5000).then(() => {if (this.obj) {
+  if(this.obj.result[0]==false)
+     {
+   this.fetched_list=this.obj.result[1]
+  
+
+   for (let index=0;index<=2;index++)
+       {
+       this.radio_list.push(this.fetched_list[index]['id'])
+       }
+       }
+ else{
+   this.radio_list.push(this.obj.result[1])
+   }
+ console.log("radio_list:")
+ console.log(this.radio_list)
+
+
+
+
+this.modalService.open(this.id);
+ }})
  
- for (let index=0;index<=2;index++)
-{
-this.radio_list.push(this.fetched_list[index]['id'])
-}
-console.log("radio_list:")
-console.log(this.radio_list)
-
-
- 
-
- this.modalService.open(this.id);
-  }
  
 }
 closeModal(id: string) {
@@ -157,9 +284,12 @@ closeModal(id: string) {
 }
 
 submit(){
+  
   let s='';
   console.log("selectedItem:")
   console.log(this.SelectedItem)
+  if(this.obj.result[0]==false)
+  {
   for (let index=0;index<this.fetched_list.length;index++)
    {
    
@@ -202,6 +332,10 @@ submit(){
  
    
    }
+  }
+  else{
+    s=this.obj.result[2]
+  }
    console.log(" s new:")
      console.log(s)
    if(this.obj.result[0]){
@@ -248,12 +382,22 @@ submit(){
        this.data.push(d);
      }
      console.log(this.data);
+     this.data.pop()
     
  
  ///
- 
+
+ console.log("inside submit data:")
+ console.log(this.data)
+ this.table_generated=true
  this.flag_table=true;
  this.modalService.close(this.id);
+ console.log("flag table:")
+ console.log(this.flag_table)
+ console.log("columns:")
+ console.log(this.displayedColumns)
+ console.log("map:")
+ console.log(this.map_col)
  }
 
 

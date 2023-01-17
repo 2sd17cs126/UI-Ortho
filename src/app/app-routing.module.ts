@@ -5,7 +5,8 @@ import { OAComponent } from './oa/oa.component';
 
 const routes: Routes = [
   {path:'OA',component:OAComponent},
-  {path:'Help',component:HelpComponent}
+  {path:'Help',component:HelpComponent},
+  {path: '', redirectTo: 'Help', pathMatch: 'full'}
 ];
 
 @NgModule({

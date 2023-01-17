@@ -18,7 +18,7 @@ import {MatTabsModule} from '@angular/material/tabs'
 import {MatCardModule} from '@angular/material/card';
 import { HelpComponent } from './help/help.component';
 
-
+import { SplitterModule } from "primeng/splitter";
 @NgModule({
   declarations: [
     AppComponent,
@@ -26,6 +26,7 @@ import { HelpComponent } from './help/help.component';
     HelpComponent
   ],
   imports: [ModalModule,
+    SplitterModule,
     HttpClientModule,
     BrowserModule,
     MatTableModule,

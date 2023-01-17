@@ -1,8 +1,9 @@
 <!--First Screen-->
+
 <div class="section1" *ngIf="firstScreen==true">
   <form action="" class="flex-container">
       <div class="input-container">
-          <label for="factors"> No of factors</label>
+          <label for="factors" style="margin-right: 10px;"> No of factors</label>
           <input type="text" [(ngModel)]="Factors" [ngModelOptions]="{standalone: true}">
       </div>
       <div class="button-container">
@@ -12,23 +13,29 @@
   </form>
   <div>
       <p>HINT</p>
+      <p style="font-size: small; margin-top: 10px;">Limitation: Maximum factor range is 9999</p>
   </div>
 </div>
 
 <!-- Second Screen-->
 <div class="section2"  *ngIf="secondScreen==true">
+  <button *ngIf="table_generated==true" class="button button2" (click)="Home()">Home</button>
   <label class="label-control">Number of Factors : {{Factors}}</label>
+  <button class="btn" title="clear" (click)="emptylist()"><i class="bi bi-eraser-fill"></i></button>
+  <button class="btn" title="Undo" (click)="refresh()"><i class="bi bi-arrow-clockwise"></i></button>
   <div class="flex-container">
-  <div class="form-group" class="input-container">
+  
+  <div style="flex-shrink: 0;" class="form-group" class="input-container">
     
     <table class="table1">
       <tbody>
+        <tr class="titles"><th>Factor name</th><th>No. of Levels</th></tr>
         <tr
           *ngFor="let row of rows; let index = index"
         >
-          <td><input [(ngModel)]="row.Factor_name" #name="ngModel" /></td>
+          <td><input class="inputId" [(ngModel)]="row.Factor_name" #name="ngModel" value="row.Factor_name"/></td>
           <td>
-              <input [(ngModel)]="row.Level_count" #name="ngModel"/>
+            <input class="inputId" style="width: 50px;" [(ngModel)]="row.Level_count" #name="ngModel" value="row.Level_count"/>
           </td>
           
         </tr>
@@ -36,33 +43,42 @@
     </table>
     
   
-      <button class="button" >Back</button>
-      <button class="button" (click)="CreateQA('custom-modal-1')">CreateQA</button>
-      <button class="button"(click)="display()">Next</button>
+  <div class="buttons_container" style="margin-top: 10px;">
+      <button *ngIf="table_generated==false" class="button button2" (click)="backfunction()">Back</button>
+      <button *ngIf="flagoa == true && table_generated==false" class="button button2" (click)="CreateOA('custom-modal-1')">Create OA</button>
+      <button *ngIf="table_generated==true" class="button button2" (click)="Home()">Home</button>
+      <button *ngIf="flagnext == true" class="button button2"(click)="display()">Next</button>
+      <button class="button button2">Exit</button>
+    </div>
   </div>
-  <div *ngIf="flag == true" class="input-container">
-    <div *ngFor="let v of rows">
-      
-        <input *ngFor="let i of v.Level_value" type="text" [(ngModel)]="i.value" #name="ngModel"  />
-     
+  <div  *ngIf="flagoa == true" class="input-container scroll" style="margin-left: 10px;">
+    <p ><b>Factors value</b></p>
+    <div *ngFor="let v of rows" style="display: flex;">
+
+        <input class="inputlevels" *ngFor="let i of v.Level_value" type="text"  style="width: 80px;"[(ngModel)]="i.value" #name="ngModel" class="space"/>
+
     </div>
-    
-    </div>
-  <div class="input-container">
   
-      <table mat-table *ngIf="flag_table==true"  #table [dataSource]="data" class="mat-elevation-z8">
-        
-        <ng-container [matColumnDef]="column" *ngFor="let column of displayedColumns">
-          <th mat-header-cell *matHeaderCellDef> {{map_col[column]}} </th>
-          <td mat-cell *matCellDef="let element"> {{element[column]}} </td>
-        </ng-container>
-      
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-      </table>
-    </div>
   </div>
+  
+  <div style="width: 40%; border-left: 1px solid black; overflow: auto;" *ngIf="flag_table==true"  class="input-container" class="table_div">
+  
+    <table align="center" class="table" mat-table *ngIf="flag_table==true"  #table [dataSource]="data" class="mat-elevation-z8">
+     
+      <ng-container [matColumnDef]="column" *ngFor="let column of displayedColumns">
+        <thead class="thead-dark">
+        <th  scope="col" mat-header-cell *matHeaderCellDef> {{map_col[column]}} </th>
+        </thead>
+        <td mat-cell *matCellDef="let element"> {{element[column]}} </td>
+      </ng-container>
+    
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </div>
+  
 </div>
+
 <jw-modal  id="custom-modal-1">
   <h1>Choose the best option:</h1>
   <div *ngFor="let enum of radio_list">
